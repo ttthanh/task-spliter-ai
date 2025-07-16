@@ -1,10 +1,5 @@
 
-import { CubeIcon } from '@heroicons/react/24/outline';
-
-
 function AiProcessing() {
-   
-
     return <>
         <h1 className="text-xl font-semibold mb-4">Ai Analysis in Progress</h1>
         <ul>
