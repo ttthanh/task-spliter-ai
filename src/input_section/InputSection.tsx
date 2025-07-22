@@ -1,13 +1,10 @@
 import type { Schema } from '../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
-import { useEffect, useState } from 'react';
-
 const client = generateClient<Schema>({
     authMode: 'apiKey',
 });
 
 function InputSection() {
-    const [data, setData] = useState(null);
 
     const createTodo = async () => {
         const dataUS = window.prompt("Todo content?");
