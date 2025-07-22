@@ -1,12 +1,12 @@
 import type { Schema } from '../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
-const client = generateClient<Schema>({
-    authMode: 'apiKey',
-});
+// const client = generateClient<Schema>({
+//     authMode: 'apiKey',
+// });
 
 function InputSection() {
 
-    const createTodo = async () => {
+    const createTodo = () => {
         // const result = await client.models.UserStory.create({
         //     content: window.prompt("Todo content?"),
         //     isDone: false,
