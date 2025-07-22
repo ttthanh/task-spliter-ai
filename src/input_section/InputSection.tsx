@@ -1,17 +1,46 @@
 import type { Schema } from '../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
+import { useEffect, useState } from 'react';
 
 const client = generateClient<Schema>({
     authMode: 'apiKey',
 });
 
 function InputSection() {
+    const [data, setData] = useState(null);
+
     const createTodo = async () => {
-        await client.models.UserStory.create({
-        content: window.prompt("Todo content?"),
-        isDone: false,
-        inCharge: "Thanh"
-        })
+        const dataUS = window.prompt("Todo content?");
+        const result = await client.models.UserStory.create({
+            content: dataUS,
+            isDone: false,
+            inCharge: "Thanh"
+        });
+        console.log(result);
+        
+
+        const base64Credentials = btoa("thanh:thanh");
+        const bodyData = {
+            question: dataUS,
+        };
+        fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${base64Credentials}`,
+            },
+            body: JSON.stringify(bodyData),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     return (

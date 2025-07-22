@@ -5,7 +5,7 @@ import OutputSection from '../output_section/OutputSection';
 
 
 function App(props: any) {
-
+  console.log(props.userInfo);
   return (
     <>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-20">
