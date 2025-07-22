@@ -7,12 +7,12 @@ const client = generateClient<Schema>({
 function InputSection() {
 
     const createTodo = async () => {
-        const result = await client.models.UserStory.create({
-            content: window.prompt("Todo content?"),
-            isDone: false,
-            inCharge: "Thanh"
-        });
-        console.log(result);
+        // const result = await client.models.UserStory.create({
+        //     content: window.prompt("Todo content?"),
+        //     isDone: false,
+        //     inCharge: "Thanh"
+        // });
+        // console.log(result);
         
 
         const base64Credentials = btoa("thanh:thanh");
@@ -28,11 +28,13 @@ function InputSection() {
             body: JSON.stringify(bodyData),
             })
             .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) {
+                    console.log(response);
+                    throw new Error('Network response was not ok');
+                }
+
+                console.log(response);
                 return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
             })
             .catch(error => {
                 console.error('Error:', error);
