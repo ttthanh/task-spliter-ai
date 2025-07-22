@@ -11,7 +11,7 @@ function App(props: any) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-20">
           <div className="bg-white p-6 rounded shadow">
               <main>
-                <h1>Hello {props.userInfo.user?.email}</h1>
+                <h1>Hello {props.userInfo?.email}</h1>
                 <button onClick={props.signOutEvent}>Sign out</button>
               </main>
               <InputSection />
