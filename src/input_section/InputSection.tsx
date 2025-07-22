@@ -1,4 +1,17 @@
+import type { Schema } from '../../amplify/data/resource'
+import { generateClient } from 'aws-amplify/data'
+
+const client = generateClient<Schema>()
+
 function InputSection() {
+    const createTodo = async () => {
+        await client.models.UserStory.create({
+        content: window.prompt("Todo content?"),
+        isDone: false,
+        inCharge: "Thanh"
+        })
+    }
+
     return (
         <>
         <h1 className="text-xl font-semibold mb-4">Input Section</h1>
@@ -19,7 +32,7 @@ function InputSection() {
 
             <div className="flex justify-center">
                 <button
-                    type="submit"
+                    type="submit" onClick={createTodo}
                     className="bg-blue-600 text-white text-lg px-8 py-3 rounded hover:bg-blue-700 transition duration-200"
                 >
                     Action
