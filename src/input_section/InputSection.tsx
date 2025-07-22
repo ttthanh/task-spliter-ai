@@ -7,9 +7,8 @@ const client = generateClient<Schema>({
 function InputSection() {
 
     const createTodo = async () => {
-        const dataUS = window.prompt("Todo content?");
         const result = await client.models.UserStory.create({
-            content: dataUS,
+            content: window.prompt("Todo content?"),
             isDone: false,
             inCharge: "Thanh"
         });
@@ -18,7 +17,7 @@ function InputSection() {
 
         const base64Credentials = btoa("thanh:thanh");
         const bodyData = {
-            question: dataUS,
+            question: "Where is the USA",
         };
         fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
             method: 'POST',
