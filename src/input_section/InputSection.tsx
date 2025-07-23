@@ -40,6 +40,8 @@ function InputSection() {
     }, []);
 
     const createTodo = () => {
+
+        console.log("aasdas some how it here");
         const result = client.models.UserStory.create({
             content: userStory,
             isDone: false,
