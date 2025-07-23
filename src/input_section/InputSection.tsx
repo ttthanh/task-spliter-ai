@@ -42,12 +42,12 @@ function InputSection() {
     const createTodo = () => {
 
         console.log("aasdas some how it here");
-        const result = client.models.UserStory.create({
-            content: userStory,
-            isDone: false,
-            inCharge: "ThanhTT1"
-        });
-        console.log(result);
+        // const result = client.models.UserStory.create({
+        //     content: userStory,
+        //     isDone: false,
+        //     inCharge: "ThanhTT1"
+        // });
+        // console.log(result);
         
 
         const base64Credentials = btoa("thanh:thanh");
