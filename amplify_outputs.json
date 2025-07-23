@@ -154,6 +154,13 @@
               "isRequired": false,
               "attributes": []
             },
+            "user_story_id": {
+              "name": "user_story_id",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "createdAt": {
               "name": "createdAt",
               "isArray": false,

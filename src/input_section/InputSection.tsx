@@ -5,11 +5,20 @@ const client = generateClient<Schema>({
 });
 import {  useState, useEffect } from 'react';
 
+
 function InputSection() {
     const [userStory, setUserStory] = useState('');
     const [userStories , setUserStories] = useState<Schema['UserStory']['type'][]>([]);
     const [tasks , setTasks] = useState<Schema['Task']['type'][]>([]);
+
+    const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
+        client.models.Task.observeQuery().subscribe({
+            next: ({ items }) => {
+                setTaskMs([...items]);
+            },
+        });
+
         const loadNotes = async () => {
             try {
                 const result = await client.models.UserStory.list(); // 'note' is the model name
@@ -101,6 +110,14 @@ function InputSection() {
         <div className='mt-4 border-t pt-4 border-gray-300'>
             <ul>
             {tasks.map((task) => (
+                <li key={task.id}>{task.title}</li>
+            ))}
+            </ul>
+        </div>
+
+        <div className='mt-4 border-t pt-4 border-gray-300'>
+            <ul>
+            {taskMs.map((task) => (
                 <li key={task.id}>{task.title}</li>
             ))}
             </ul>

@@ -12,6 +12,7 @@ const schema = a.schema({
         description: a.string(),
         status: a.string(),
         assignedTo: a.string(),
+        user_story_id: a.string(),
     }).authorization(allow => [allow.publicApiKey()])
 });
 
