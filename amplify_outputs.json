@@ -191,7 +191,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "apiKey",
+                    "provider": "iam",
                     "operations": [
                       "create",
                       "update",

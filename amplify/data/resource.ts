@@ -13,7 +13,7 @@ const schema = a.schema({
         status: a.string(),
         assignedTo: a.string(),
         user_story_id: a.string(),
-    }).authorization(allow => [allow.publicApiKey()])
+    }).authorization(allow => [allow.guest()])
 });
 
 export type Schema = ClientSchema<typeof schema>;
