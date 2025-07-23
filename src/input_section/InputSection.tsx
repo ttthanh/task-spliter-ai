@@ -13,11 +13,12 @@ function InputSection() {
 
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
-        client.models.Task.observeQuery().subscribe({
+        let sub:any = client.models.Task.observeQuery().subscribe({
             next: ({ items, isSynced }) => {
                 console.log("Task isSynced", isSynced);
                 setTaskMs([...items]);
             },
+            error: (err) => console.error("Subscription error:", err),
         });
 
         const loadNotes = async () => {
@@ -37,7 +38,7 @@ function InputSection() {
             }
         };
         loadNotes();
-
+         return () => sub.unsubscribe(); // Clean up
     }, []);
 
     const createTodo = () => {
