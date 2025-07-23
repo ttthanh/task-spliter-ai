@@ -42,12 +42,12 @@ function InputSection() {
     const createTodo = () => {
 
         console.log("aasdas some how it here");
-        // const result = client.models.UserStory.create({
-        //     content: userStory,
-        //     isDone: false,
-        //     inCharge: "ThanhTT1"
-        // });
-        // console.log(result);
+        const result = client.models.UserStory.create({
+            content: userStory,
+            isDone: false,
+            inCharge: "ThanhTT1"
+        });
+        console.log(result);
         
 
         const base64Credentials = btoa("thanh:thanh");
@@ -79,7 +79,7 @@ function InputSection() {
     return (
         <>
         <h1 className="text-xl font-semibold mb-4">Input Section</h1>
-        <form className="bg-white pb-6 rounded shadow-md w-full max-w-md">
+        <div className="bg-white pb-6 rounded shadow-md w-full max-w-md">
             <p>
                 <span className="float-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -96,13 +96,13 @@ function InputSection() {
 
             <div className="flex justify-center">
                 <button
-                    type="submit" onClick={createTodo}
+                    type="button" onClick={createTodo}
                     className="bg-blue-600 text-white text-lg px-8 py-3 rounded hover:bg-blue-700 transition duration-200"
                 >
                     Action
                 </button>
             </div>
-        </form>
+        </div>
 
         <ul>
             {userStories.map((userStory) => (
