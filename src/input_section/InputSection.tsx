@@ -13,14 +13,6 @@ function InputSection() {
 
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
-        let sub:any = client.models.Task.observeQuery().subscribe({
-            next: ({ items, isSynced }) => {
-                console.log("Task isSynced", isSynced);
-                setTaskMs([...items]);
-            },
-            error: (err) => console.error("Subscription error:", err),
-        });
-
         const loadNotes = async () => {
             try {
                 const result = await client.models.UserStory.list(); // 'note' is the model name
@@ -38,7 +30,6 @@ function InputSection() {
             }
         };
         loadNotes();
-        return () => sub.unsubscribe(); // Clean up
     }, []);
 
     const createTodo = () => {
@@ -56,6 +47,13 @@ function InputSection() {
         const bodyData = {
             question: userStory,
         };
+        let sub:any = client.models.Task.observeQuery().subscribe({
+            next: ({ items, isSynced }) => {
+                console.log("Task isSynced", isSynced);
+                setTaskMs([...items]);
+            },
+            error: (err) => console.error("Subscription error:", err),
+        });
         fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
             method: 'POST',
             headers: {
