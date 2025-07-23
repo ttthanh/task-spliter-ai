@@ -8,11 +8,15 @@ import {  useState, useEffect } from 'react';
 function InputSection() {
     const [userStory, setUserStory] = useState('');
     const [userStories , setUserStories] = useState<Schema['UserStory']['type'][]>([]);
+    const [tasks , setTasks] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
         const loadNotes = async () => {
             try {
                 const result = await client.models.UserStory.list(); // 'note' is the model name
                 setUserStories(result.data);
+
+                const resultData = await client.models.Task.list(); // 'note' is the model name
+                setTasks(resultData.data);
             } catch (error) {
                 console.error('Error loading notes:', error);
             } finally {
@@ -91,6 +95,13 @@ function InputSection() {
             <li key={userStory.id}>{userStory.content}</li>
             ))}
         </ul>
+        <div className='mt-4 border-t pt-4 border-gray-300'>
+            <ul>
+            {tasks.map((task) => (
+            <li key={task.id}>{task.title}</li>
+            ))}
+        </ul>
+        </div>
         </>
     );
 }
