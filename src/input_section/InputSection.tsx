@@ -3,10 +3,25 @@ import { generateClient } from 'aws-amplify/data'
 const client = generateClient<Schema>({
     authMode: 'apiKey',
 });
-import {  useState } from 'react';
+import {  useState, useEffect } from 'react';
 
 function InputSection() {
     const [userStory, setUserStory] = useState('');
+    const [userStories , setUserStories] = useState<Schema['UserStory']['type'][]>([]);
+    useEffect(() => {
+        const loadNotes = async () => {
+            try {
+                const result = await client.models.UserStory.list(); // 'note' is the model name
+                setUserStories(result.data);
+            } catch (error) {
+                console.error('Error loading notes:', error);
+            } finally {
+                 console.error('Done');
+            }
+        };
+        loadNotes();
+
+    }, []);
 
     const createTodo = () => {
         const result = client.models.UserStory.create({
@@ -70,6 +85,12 @@ function InputSection() {
                 </button>
             </div>
         </form>
+
+        <ul>
+            {userStories.map((userStory) => (
+            <li key={userStory.id}>{userStory.content}</li>
+            ))}
+        </ul>
         </>
     );
 }
