@@ -16,6 +16,7 @@ function InputSection() {
                 
 
                 const resultData = await client.models.Task.list(); // 'note' is the model name
+                console.log(resultData)
                 console.log(resultData.data);
                 setTasks(resultData.data);
                 setUserStories(result.data);
@@ -100,7 +101,7 @@ function InputSection() {
         <div className='mt-4 border-t pt-4 border-gray-300'>
             <ul>
             {tasks.map((task) => (
-            <li key={task.id}>{task.title}</li>
+                <li key={task.id}>{task.title}</li>
             ))}
             </ul>
         </div>
