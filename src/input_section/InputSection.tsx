@@ -47,7 +47,7 @@ function InputSection() {
         const bodyData = {
             question: userStory,
         };
-        let sub:any = client.models.Task.observeQuery().subscribe({
+        client.models.Task.observeQuery().subscribe({
             next: ({ items, isSynced }) => {
                 console.log("Task isSynced", isSynced);
                 setTaskMs([...items]);
