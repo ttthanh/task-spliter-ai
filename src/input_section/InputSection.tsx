@@ -13,10 +13,12 @@ function InputSection() {
         const loadNotes = async () => {
             try {
                 const result = await client.models.UserStory.list(); // 'note' is the model name
-                setUserStories(result.data);
+                
 
                 const resultData = await client.models.Task.list(); // 'note' is the model name
+                console.log(resultData.data);
                 setTasks(resultData.data);
+                setUserStories(result.data);
             } catch (error) {
                 console.error('Error loading notes:', error);
             } finally {
