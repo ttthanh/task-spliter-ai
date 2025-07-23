@@ -13,9 +13,9 @@ function InputSection() {
 
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
-        client.models.Task.observeQuery().subscribe({
-            next: ({ items }) => {
-                setTaskMs([...items]);
+        client.models.Task.onCreate().subscribe({
+            next: (item) => {
+                setTaskMs(tasks => [...tasks, item]);
             },
         });
 
