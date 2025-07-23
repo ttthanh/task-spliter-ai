@@ -1,23 +1,25 @@
-// import type { Schema } from '../../amplify/data/resource'
-// import { generateClient } from 'aws-amplify/data'
-// const client = generateClient<Schema>({
-//     authMode: 'apiKey',
-// });
+import type { Schema } from '../../amplify/data/resource'
+import { generateClient } from 'aws-amplify/data'
+const client = generateClient<Schema>({
+    authMode: 'apiKey',
+});
+import {  useState } from 'react';
 
 function InputSection() {
+    const [userStory, setUserStory] = useState('');
 
     const createTodo = () => {
-        // const result = await client.models.UserStory.create({
-        //     content: window.prompt("Todo content?"),
-        //     isDone: false,
-        //     inCharge: "Thanh"
-        // });
-        // console.log(result);
+        const result = client.models.UserStory.create({
+            content: userStory,
+            isDone: false,
+            inCharge: "ThanhTT1"
+        });
+        console.log(result);
         
 
         const base64Credentials = btoa("thanh:thanh");
         const bodyData = {
-            question: "Where is the USA",
+            question: userStory,
         };
         fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
             method: 'POST',
@@ -54,7 +56,7 @@ function InputSection() {
                 Describe your user story or paste ticket content
             </p>
             
-            <textarea
+            <textarea value={userStory} onChange={(e) => setUserStory(e.target.value)}
             className="w-full h-32 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-4"
             placeholder="As a user, i want to automatically handle consumer"
             ></textarea>
