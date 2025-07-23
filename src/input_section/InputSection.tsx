@@ -38,7 +38,7 @@ function InputSection() {
             }
         };
         loadNotes();
-         return () => sub.unsubscribe(); // Clean up
+        return () => sub.unsubscribe(); // Clean up
     }, []);
 
     const createTodo = () => {
