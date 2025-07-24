@@ -10,14 +10,21 @@ function InputSection() {
     const [userStory, setUserStory] = useState('');
     const [userStories , setUserStories] = useState<Schema['UserStory']['type'][]>([]);
     const [tasks , setTasks] = useState<Schema['Task']['type'][]>([]);
+    const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
 
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
+        client.models.UserStory.observeQuery().subscribe({
+            next: ({ items, isSynced }) => {
+                console.log("Task isSynced", isSynced);
+                setUserStoryM([...items]);
+            },
+            error: (err) => console.error("Subscription error:", err),
+        });
+
         const loadNotes = async () => {
             try {
                 const result = await client.models.UserStory.list(); // 'note' is the model name
-                
-
                 const resultData = await client.models.Task.list(); // 'note' is the model name
                 console.log(resultData)
                 console.log(resultData.data);
@@ -121,6 +128,11 @@ function InputSection() {
             <ul>
             {taskMs.map((task) => (
                 <li key={task.id}>{task.title}</li>
+            ))}
+            </ul>
+            <ul>
+            {userStoryM.map((task) => (
+                <li key={task.id}>{task.content}</li>
             ))}
             </ul>
         </div>
