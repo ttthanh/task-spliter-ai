@@ -11,6 +11,15 @@ function InputSection() {
     const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resultData = await client.models.Task.list();
+                setUserStoryM([...resultData.data]);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
         client.models.UserStory.observeQuery().subscribe({
             next: ({ items, isSynced }) => {
                 console.log("US isSynced", isSynced);
@@ -37,7 +46,8 @@ function InputSection() {
         client.models.Task.onCreate().subscribe({
             next: (data) => {
                 console.log("Task isSynced", data);
-                setTaskMs([...taskMs, data]);
+                //setTaskMs([...taskMs, data]);
+                fetchData();
             },
             error: (error) => console.warn(error),
         });
