@@ -8,10 +8,7 @@ import {  useState, useEffect } from 'react';
 
 function InputSection() {
     const [userStory, setUserStory] = useState('');
-    const [userStories , setUserStories] = useState<Schema['UserStory']['type'][]>([]);
-    const [tasks , setTasks] = useState<Schema['Task']['type'][]>([]);
     const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
-
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
     useEffect(() => {
         client.models.UserStory.observeQuery().subscribe({
@@ -30,21 +27,21 @@ function InputSection() {
             error: (err) => console.error("Subscription error:", err),
         });
 
-        const loadNotes = async () => {
-            try {
-                const result = await client.models.UserStory.list(); // 'note' is the model name
-                const resultData = await client.models.Task.list(); // 'note' is the model name
-                console.log(resultData)
-                console.log(resultData.data);
-                setTasks(resultData.data);
-                setUserStories(result.data);
-            } catch (error) {
-                console.error('Error loading notes:', error);
-            } finally {
-                 console.error('Done');
-            }
-        };
-        loadNotes();
+        // const loadNotes = async () => {
+        //     try {
+        //         //const result = await client.models.UserStory.list(); // 'note' is the model name
+        //         //const resultData = await client.models.Task.list(); // 'note' is the model name
+        //         // console.log(resultData)
+        //         // console.log(resultData.data);
+        //         // setTasks(resultData.data);
+        //         // setUserStories(result.data);
+        //     } catch (error) {
+        //         console.error('Error loading notes:', error);
+        //     } finally {
+        //          console.error('Done');
+        //     }
+        // };
+        // loadNotes();
     }, []);
 
     const createTodo = () => {
@@ -113,7 +110,7 @@ function InputSection() {
             </div>
         </div>
 
-        <ul>
+        {/* <ul>
             {userStories.map((userStory) => (
             <li key={userStory.id}>{userStory.content}</li>
             ))}
@@ -124,10 +121,11 @@ function InputSection() {
                 <li key={task.id}>{task.title}</li>
             ))}
             </ul>
-        </div>
+        </div> */}
 
         <div className='mt-4 border-t pt-4 border-gray-300'>
             <ul>
+                <li>123</li>
             {taskMs.map((task) => (
                 <li key={task.id}>{task.title}</li>
             ))}
