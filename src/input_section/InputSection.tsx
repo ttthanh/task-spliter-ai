@@ -14,7 +14,7 @@ function InputSection() {
         const fetchData = async () => {
             try {
                 const resultData = await client.models.Task.list();
-                setUserStoryM([...resultData.data]);
+                setTaskMs([...resultData.data]);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
