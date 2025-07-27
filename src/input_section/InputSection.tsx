@@ -19,15 +19,27 @@ function InputSection() {
             error: (err) => console.error("Subscription error:", err),
         });
 
-        client.models.Task.observeQuery().subscribe({
-            next: ({ items, isSynced }) => {
-                console.log("Task isSynced", isSynced);
-                console.log("Task isSynced", items);
+        // client.models.Task.observeQuery({
+        //         filter: {
+                    
+        //         },
+        //     }).subscribe({
+        //     next: ({ items, isSynced }) => {
+        //         console.log("Task isSynced", isSynced);
+        //         console.log("Task isSynced", items);
 
-                const validItems = items.filter(task => task && task.id);
-                setTaskMs([...validItems]);
+        //         const validItems = items.filter(task => task && task.id);
+        //         setTaskMs([...validItems]);
+        //     },
+        //     error: (err) => console.error("Subscription error:", err),
+        // });
+
+        client.models.Task.onCreate().subscribe({
+            next: (data) => {
+                console.log("Task isSynced", data);
+                setTaskMs([...taskMs, data]);
             },
-            error: (err) => console.error("Subscription error:", err),
+            error: (error) => console.warn(error),
         });
 
         // const loadNotes = async () => {
