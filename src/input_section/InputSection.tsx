@@ -13,7 +13,7 @@ function InputSection() {
     useEffect(() => {
         client.models.UserStory.observeQuery().subscribe({
             next: ({ items, isSynced }) => {
-                console.log("Task isSynced", isSynced);
+                console.log("US isSynced", isSynced);
                 setUserStoryM([...items]);
             },
             error: (err) => console.error("Subscription error:", err),
@@ -22,7 +22,10 @@ function InputSection() {
         client.models.Task.observeQuery().subscribe({
             next: ({ items, isSynced }) => {
                 console.log("Task isSynced", isSynced);
-                setTaskMs([...items]);
+                console.log("Task isSynced", items);
+
+                const validItems = items.filter(task => task && task.id);
+                setTaskMs([...validItems]);
             },
             error: (err) => console.error("Subscription error:", err),
         });
@@ -45,14 +48,11 @@ function InputSection() {
     }, []);
 
     const createTodo = () => {
-
-        console.log("aasdas some how it here");
-        const result = client.models.UserStory.create({
+        client.models.UserStory.create({
             content: userStory,
             isDone: false,
             inCharge: "ThanhTT1"
         });
-        console.log(result);
         
 
         const base64Credentials = btoa("thanh:thanh");
@@ -131,7 +131,7 @@ function InputSection() {
                         console.log(task);
                         return (
                             <li>
-                                {task.title} - {task.description}</li>)
+                                123</li>)
                     })
                 }
             </ul>
