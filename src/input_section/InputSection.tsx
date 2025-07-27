@@ -125,15 +125,9 @@ function InputSection() {
 
         <div className='mt-4 border-t pt-4 border-gray-300'>
             <ul>
-                <li>123</li>
-                {
-                    taskMs.map((task) => {
-                        console.log(task);
-                        return (
-                            <li>
-                                123</li>)
-                    })
-                }
+                {taskMs.map(task => task && (
+                <li key={task.id}>{task.title}</li>
+                ))}
             </ul>
 
 
