@@ -12,7 +12,7 @@ Amplify.configure(outputs);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Authenticator>
+    <Authenticator signUpAttributes={['email', 'preferred_username']}>
       {({ signOut, user }) => (
         <>
           <Header />

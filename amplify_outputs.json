@@ -109,6 +109,14 @@
               "properties": {}
             },
             {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "id"
+                ]
+              }
+            },
+            {
               "type": "auth",
               "properties": {
                 "rules": [
@@ -149,15 +157,22 @@
               "isRequired": false,
               "attributes": []
             },
-            "description": {
-              "name": "description",
+            "order": {
+              "name": "order",
               "isArray": false,
               "type": "String",
               "isRequired": false,
               "attributes": []
             },
-            "status": {
-              "name": "status",
+            "progress": {
+              "name": "progress",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "estimate": {
+              "name": "estimate",
               "isArray": false,
               "type": "String",
               "isRequired": false,

@@ -1,5 +1,6 @@
 import type { Schema } from '../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
+import { getCurrentUser } from 'aws-amplify/auth'
 const client = generateClient<Schema>({
     authMode: 'apiKey',
 });
@@ -10,6 +11,7 @@ function InputSection() {
     const [userStory, setUserStory] = useState('');
     const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
     const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
+    const [userId, setUserId] = useState<string | null>(null);
     useEffect(() => {
         // const fetchData = async () => {
         //     try {
@@ -19,14 +21,30 @@ function InputSection() {
         //         console.error('Error fetching data:', error);
         //     }
         // };
+        
+        
+        
+        async function getUserIdentifier() {
+            try {
+                const { userId } = await getCurrentUser();
+                console.log("Current User ID:", userId);
+                setUserId(userId);
 
-        client.models.UserStory.observeQuery().subscribe({
-            next: ({ items, isSynced }) => {
-                console.log("US isSynced", isSynced);
-                setUserStoryM([...items]);
-            },
-            error: (err) => console.error("Subscription error:", err),
-        });
+                const resultData = await client.models.UserStory.list({
+                    filter: {
+                        inCharge: {
+                            eq: userId
+                        }
+                    }
+                });
+                setUserStoryM([...resultData.data]);
+            } catch (error) {
+                console.error("Error getting current user:", error);
+                return null;
+            }
+        }
+        getUserIdentifier();
+       
 
         // client.models.Task.observeQuery({
         //         filter: {
@@ -70,39 +88,49 @@ function InputSection() {
         // loadNotes();
     }, []);
 
-    const createTodo = () => {
-        client.models.UserStory.create({
+    const createUserStory = async () => {
+        const newStory = await client.models.UserStory.create({
             content: userStory,
             isDone: false,
-            inCharge: "ThanhTT1"
+            inCharge: userId
         });
-        
 
-        const base64Credentials = btoa("thanh:thanh");
-        const bodyData = {
-            question: userStory,
-        };
-        
-        fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${base64Credentials}`,
-            },
-            body: JSON.stringify(bodyData),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    console.log(response);
-                    throw new Error('Network response was not ok');
-                }
+        console.log("Created UserStory ID:", newStory.data?.id);
+        return newStory.data?.id;
+    };
 
-                console.log(response);
-                return response.json();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+    const createTodo = () => {
+        createUserStory()
+        .then((userStoryId) => {
+            if (userStoryId) {
+                const base64Credentials = btoa("thanh:thanh");
+                const bodyData = {
+                    question: userStory,
+                    userStoryId: userStoryId
+                };
+        
+                fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Basic ${base64Credentials}`,
+                    },
+                    body: JSON.stringify(bodyData),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log(response);
+                            throw new Error('Network response was not ok');
+                        }
+
+                        console.log(response);
+                        return response.json();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+                });
     }
 
     return (
