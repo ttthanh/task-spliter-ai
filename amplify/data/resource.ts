@@ -5,6 +5,7 @@ const schema = a.schema({
         content: a.string(),
         isDone: a.boolean(),
         inCharge: a.string(),
+        tasks: a.hasMany('Task', 'user_story_id'),
     })
     .authorization(allow => [allow.publicApiKey()]),
     Task: a.model({
@@ -13,6 +14,7 @@ const schema = a.schema({
         status: a.string(),
         assignedTo: a.string(),
         user_story_id: a.string(),
+        userstory: a.belongsTo('UserStory', 'user_story_id')
     }).authorization(allow => [allow.publicApiKey()])
 });
 

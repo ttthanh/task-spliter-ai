@@ -1,10 +1,37 @@
 {
+  "auth": {
+    "user_pool_id": "ap-southeast-1_8MxUy6Ewa",
+    "aws_region": "ap-southeast-1",
+    "user_pool_client_id": "44mbbdrtupbl2ojuvgcugkbctu",
+    "identity_pool_id": "ap-southeast-1:ae897adf-7f74-4029-b2cc-d58457b13122",
+    "mfa_methods": [],
+    "standard_required_attributes": [
+      "email"
+    ],
+    "username_attributes": [
+      "email"
+    ],
+    "user_verification_types": [
+      "email"
+    ],
+    "groups": [],
+    "mfa_configuration": "NONE",
+    "password_policy": {
+      "min_length": 8,
+      "require_lowercase": true,
+      "require_numbers": true,
+      "require_symbols": true,
+      "require_uppercase": true
+    },
+    "unauthenticated_identities_enabled": true
+  },
   "data": {
     "url": "https://2gcoe2iukjhzjijjevf6stlfua.appsync-api.ap-southeast-1.amazonaws.com/graphql",
     "aws_region": "ap-southeast-1",
     "api_key": "da2-zgnilinxujchxnnftgghzetgd4",
     "default_authorization_type": "API_KEY",
     "authorization_types": [
+      "AMAZON_COGNITO_USER_POOLS",
       "AWS_IAM"
     ],
     "model_introspection": {
@@ -40,6 +67,22 @@
               "type": "String",
               "isRequired": false,
               "attributes": []
+            },
+            "tasks": {
+              "name": "tasks",
+              "isArray": true,
+              "type": {
+                "model": "Task"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "user_story_id"
+                ]
+              }
             },
             "createdAt": {
               "name": "createdAt",
@@ -133,6 +176,21 @@
               "type": "String",
               "isRequired": false,
               "attributes": []
+            },
+            "userstory": {
+              "name": "userstory",
+              "isArray": false,
+              "type": {
+                "model": "UserStory"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "user_story_id"
+                ]
+              }
             },
             "createdAt": {
               "name": "createdAt",
