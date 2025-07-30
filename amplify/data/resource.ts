@@ -15,6 +15,7 @@ const schema = a.schema({
         progress: a.string(),
         estimate: a.string(),
         assignedTo: a.string(),
+        note: a.string(),
         user_story_id: a.string(),
         userstory: a.belongsTo('UserStory', 'user_story_id')
     }).authorization(allow => [allow.publicApiKey()])

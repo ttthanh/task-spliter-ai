@@ -1,49 +1,53 @@
 import type { Schema } from '../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
-import { getCurrentUser } from 'aws-amplify/auth'
 const client = generateClient<Schema>({
     authMode: 'apiKey',
 });
 import {  useState, useEffect } from 'react';
 
 
-function InputSection() {
+function InputSection(props: any) {
     const [userStory, setUserStory] = useState('');
-    const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
-    const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
-    const [userId, setUserId] = useState<string | null>(null);
+    // const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
+    // const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
+    // const [userId, setUserId] = useState<string | null>(null);
     useEffect(() => {
-        // const fetchData = async () => {
+        
+        
+        // async function getUserIdentifier() {
         //     try {
-        //         const resultData = await client.models.Task.list();
-        //         setTaskMs([...resultData.data]);
-        //     } catch (error) {
-        //         console.error('Error fetching data:', error);
-        //     }
-        // };
-        
-        
-        
-        async function getUserIdentifier() {
-            try {
-                const { userId } = await getCurrentUser();
-                console.log("Current User ID:", userId);
-                setUserId(userId);
+        //         const { userId } = await getCurrentUser();
+        //         console.log("Current User ID:", userId);
+        //         setUserId(userId);
 
-                const resultData = await client.models.UserStory.list({
-                    filter: {
-                        inCharge: {
-                            eq: userId
-                        }
-                    }
-                });
-                setUserStoryM([...resultData.data]);
-            } catch (error) {
-                console.error("Error getting current user:", error);
-                return null;
-            }
-        }
-        getUserIdentifier();
+        //         const resultData = await client.models.UserStory.list({
+        //             filter: {
+        //                 inCharge: {
+        //                     eq: userId
+        //                 }
+        //             }
+        //         });
+
+        //         const taskTemp = []
+        //         for (const usData of resultData.data) {
+        //             const resultData1 = await client.models.Task.list({
+        //                 filter: {
+        //                     user_story_id: {
+        //                         eq: String(usData.id)
+        //                     }
+        //                 }
+        //             });
+        //             taskTemp.push(...resultData1.data);
+        //         }
+                
+        //         setTaskMs([...taskTemp]);
+        //         setUserStoryM([...resultData.data]);
+        //     } catch (error) {
+        //         console.error("Error getting current user:", error);
+        //         return null;
+        //     }
+        // }
+        // getUserIdentifier();
        
 
         // client.models.Task.observeQuery({
@@ -61,13 +65,13 @@ function InputSection() {
         //     error: (err) => console.error("Subscription error:", err),
         // });
 
-        client.models.Task.observeQuery().subscribe({
-            next: ({ items, isSynced }) => {
-                console.log("Task isSynced", isSynced);
-                setTaskMs([...items]);
-            },
-            error: (err) => console.error("Subscription error:", err),
-        });
+        // client.models.Task.observeQuery().subscribe({
+        //     next: ({ items, isSynced }) => {
+        //         console.log("Task isSynced", isSynced);
+        //         setTaskMs([...items]);
+        //     },
+        //     error: (err) => console.error("Subscription error:", err),
+        // });
 
         
 
@@ -92,9 +96,13 @@ function InputSection() {
         const newStory = await client.models.UserStory.create({
             content: userStory,
             isDone: false,
-            inCharge: userId
+            inCharge: props.userId
         });
 
+        // if (newStory.data) {
+        //     setUserStoryM([...userStoryM, newStory.data]);
+        // }
+        props.userStoryClickA(newStory.data?.id);
         console.log("Created UserStory ID:", newStory.data?.id);
         return newStory.data?.id;
     };
@@ -108,6 +116,7 @@ function InputSection() {
                     question: userStory,
                     userStoryId: userStoryId
                 };
+                setUserStory('');
         
                 fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
                     method: 'POST',
@@ -174,20 +183,22 @@ function InputSection() {
             </ul>
         </div> */}
 
-        <div className='mt-4 border-t pt-4 border-gray-300'>
+        {/* <div className='mt-4 border-t pt-4 border-gray-300'>
             <ul>
-                {taskMs.map(task => task && (
-                <li key={task.id}>{task.title}</li>
-                ))}
-            </ul>
-
-
-            <ul>
-            {userStoryM.map((task) => (
-                <li key={task.id}>{task.content}</li>
+            {userStoryM.map((us) => (
+                <li key={us.id}>
+                    <p className='font-bold'>{us.content}</p>
+                    <ul>{taskMs.filter(task => task.user_story_id == us.id).sort((a, b) =>
+                            (parseInt(a.order ?? '0')) - (parseInt(b.order ?? '0'))
+                                        ).map(task => task && (
+                            <li key={task.id}>{task.order} -- {task.title} -- { task.estimate}</li>
+                        ))}
+                    </ul> 
+                
+                </li>
             ))}
             </ul>
-        </div>
+        </div> */}
         </>
     );
 }

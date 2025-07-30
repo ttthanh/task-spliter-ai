@@ -15,8 +15,8 @@ createRoot(document.getElementById('root')!).render(
     <Authenticator signUpAttributes={['email', 'preferred_username']}>
       {({ signOut, user }) => (
         <>
-          <Header />
-          <App userInfo={user} signOutEvent={signOut} />
+          <Header signOutEvent={signOut} />
+          <App userInfo={user} />
         </>
       )}
     </Authenticator>
