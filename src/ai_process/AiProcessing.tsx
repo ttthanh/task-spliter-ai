@@ -56,7 +56,22 @@ function AiProcessing(props: any) {
         
     }, [props.userStoryData]);
 
-    const subTaskDisplay = (task: Schema['Task']['type']) => {
+    const deleteAllUS = (tasks: string[], us_id: string) => {
+        for (const taskId of tasks) {
+            const toBeDeletedTodo = {
+                id: taskId
+            }
+            client.models.Task.delete(toBeDeletedTodo);
+        }
+
+        const toBeDeletedTodo = {
+            id: us_id
+        }
+        client.models.UserStory.delete(toBeDeletedTodo);
+
+    }
+
+    const subTaskDisplay = (task: Schema['Task']['type'], index: number) => {
         return (
             <li key={task.id} className="border border-gray-200 p-2 mb-2">
                 <div className="my-1">
@@ -67,7 +82,7 @@ function AiProcessing(props: any) {
                             </svg>
                         </span>
                         <span className="ml-1">
-                            <span className="font-bold">Task {task.order}:</span> {task.title}
+                            <span className="font-bold">Task {index + 1}:</span> {task.title}
                         </span>
                     </div>
                     <div className="my-1">
@@ -135,7 +150,10 @@ function AiProcessing(props: any) {
 
                     return (
                     <li key={us.id}>
-                        <p className="font-bold text-red-500">User Story: {us.content}</p>
+                        <p className="font-bold text-red-500">
+                            <span onClick={() => deleteAllUS(filteredTasks.map((taskData: Schema['Task']['type']) => taskData.id), us.id)}>
+                                User Story:</span> {us.content}
+                            </p>
 
                         {filteredTasks.length === 0 ? (
                         <div className="flex items-center justify-center py-4">
@@ -144,8 +162,8 @@ function AiProcessing(props: any) {
                         </div>
                         ) : (
                         <ul>
-                            {filteredTasks.map((task: Schema['Task']['type']) => (
-                            task && subTaskDisplay(task)
+                            {filteredTasks.map((task: Schema['Task']['type'], index: number ) => (
+                            task && subTaskDisplay(task, index)
                             ))}
                         </ul>
                         )}
