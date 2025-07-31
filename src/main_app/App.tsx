@@ -3,13 +3,26 @@ import AiProcessing from '../ai_process/AiProcessing';
 import OutputSection from '../output_section/OutputSection';
 import { useState } from 'react';
 import type { Schema } from '../../amplify/data/resource'
+import { generateClient } from 'aws-amplify/data'
 
+const client = generateClient<Schema>({
+    authMode: 'apiKey',
+});
 
 function App(props: any) {
   console.log(props.userInfo);
   const [userStory, setUserStory] = useState('');
   const [userStoryM, setUserStoryM] = useState<Schema['UserStory']['type'][]>([]);
   const [taskMs, setTaskMs] = useState<Schema['Task']['type'][]>([]);
+
+  const deleteOneTask = (taskId: string) => {
+    const toBeDeletedTodo = {
+      id: taskId
+    }
+    setTaskMs(taskMs.filter((task) => task.id !== taskId));
+    console.log("toBeDeletedTodo", toBeDeletedTodo);
+    client.models.Task.delete(toBeDeletedTodo)
+  }
 
   return (
     <>
@@ -20,7 +33,8 @@ function App(props: any) {
           <div className="bg-white p-6 rounded shadow">
               <AiProcessing userId={props.userInfo?.userId} userStoryData={userStory} 
                 userStoryDataList={userStoryM} taskDataList={taskMs}
-                updateUserStoryDataList={setUserStoryM} updateTaskDataList={setTaskMs}/>
+                updateUserStoryDataList={setUserStoryM} updateTaskDataList={setTaskMs}
+                deleteOneTask={deleteOneTask}/>
           </div>
           <div className="bg-white p-6 rounded shadow">
               <OutputSection userId={props.userInfo?.userId} userStoryDataList={userStoryM} taskDataList={taskMs}/>

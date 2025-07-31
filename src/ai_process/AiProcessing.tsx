@@ -67,7 +67,7 @@ function AiProcessing(props: any) {
                             </svg>
                         </span>
                         <span className="ml-1">
-                            <span className="font-bold">Subtask {task.order}:</span> {task.title}
+                            <span className="font-bold">Task {task.order}:</span> {task.title}
                         </span>
                     </div>
                     <div className="my-1">
@@ -112,10 +112,10 @@ function AiProcessing(props: any) {
                                 Update Status
                             </button>
                             <button
-                                type="submit"
+                                onClick={() => props.deleteOneTask(task.id)}
                                 className="bg-purple-600 text-white px-2 py-1 mx-1 rounded hover:bg-purple-700 transition duration-200"
                             >
-                                Export
+                                Delete
                             </button>
                         </div>
                 </div>
