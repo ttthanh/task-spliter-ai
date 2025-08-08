@@ -5,19 +5,23 @@ import { Amplify } from 'aws-amplify';
 import '@aws-amplify/ui-react/styles.css';
 import outputs from "../amplify_outputs.json";
 import './index.css'
-import App from './main_app/App.tsx'
-import Header from './header/Header.tsx'
+import Home from './home/Home.tsx'
+import Admin from './admin/Admin.tsx';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 Amplify.configure(outputs);
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Authenticator signUpAttributes={['email', 'preferred_username']}>
-      {({ signOut, user }) => (
-        <>
-          <Header signOutEvent={signOut} />
-          <App userInfo={user} />
-        </>
+      {({ signOut }) => (
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home signOut={signOut} />}/>
+            <Route path="/admin" element={<Admin />}/>
+          </Routes>
+        </Router>
+        
       )}
     </Authenticator>
     

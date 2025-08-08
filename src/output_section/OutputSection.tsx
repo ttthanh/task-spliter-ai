@@ -1,5 +1,6 @@
 import { useRef, useEffect , useState } from 'react';
 import type { Schema } from '../../amplify/data/resource'
+import ChatSection from '../chat_section/ChatSection';
 
 type Message = {
   id: number;
@@ -200,7 +201,8 @@ function OutputSection(props: any) {
     }
 
     return (
-        <>
+        <>  
+            <ChatSection userInfo={props.userInfo}/>
             <h1 className="text-xl font-semibold mb-4">Task spliter Assitant</h1>
         
             <div  className="flex flex-col h-[500px] w-full max-w-md mx-auto bg-white shadow-lg rounded-xl border  border-gray-200">
