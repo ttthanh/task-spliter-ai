@@ -1,7 +1,7 @@
 import type { Schema } from '../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
 import { useState, useEffect, useRef } from 'react';
-import { Button, Input, Flex } from '@aws-amplify/ui-react';
+//import { Button, Input, Flex } from '@aws-amplify/ui-react';
 
 const client = generateClient<Schema>({
     authMode: 'apiKey',
