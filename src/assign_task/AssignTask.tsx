@@ -57,7 +57,9 @@ function AssignTask(props: {selectedTeam: string}) {
                         return ({
                             trigger: dataUS.content,
                             value: dataUS.id,
-                            content: taskSort.map(task => (<div key={task.id}>{task.title}</div>)),
+                            content: taskSort.map(task => (
+                                <div key={task.id}>{task.title}</div>
+                            )),
                         }) 
                     })
                 }

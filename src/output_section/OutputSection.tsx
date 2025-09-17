@@ -1,6 +1,6 @@
 import { useRef, useEffect , useState } from 'react';
 import type { Schema } from '../../amplify/data/resource'
-import ChatSection from '../chat_section/ChatSection';
+// import ChatSection from '../chat_section/ChatSection';
 
 type Message = {
   id: number;
@@ -36,61 +36,118 @@ function OutputSection(props: any) {
             sender: 'assistant',
         };
         setMessages([...messages, newMsg, newMsg11]);
+
+
+        const base64Credentials = btoa("thanh:thanh");
+        const bodyData = {
+            question: input,
+            tasks: props.taskDataList,
+            userStoryName: props.userStoryDataList.length > 0 ? props.userStoryDataList[0].content : '',
+        };
+        
+        
+        fetch('https://split-task.app.n8n.cloud/webhook/3de89bcc-d50e-4578-aa18-1f66245a91fa', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Basic ${base64Credentials}`,
+                    },
+                    body: JSON.stringify(bodyData),
+                    })
+                    .then(async response => {
+                        if (!response.ok) {
+                            console.log(response);
+                            throw new Error('Network response was not ok');
+                        }
+
+                        const reader = response.body?.getReader();
+                        if (reader) {
+                            const decoder = new TextDecoder();
+                            let result = '';
+
+                            while (true) {
+                                const { done, value } = await reader.read();
+                                if (done) break;
+                                result += decoder.decode(value, { stream: true });
+                                console.log('Chunk:', decoder.decode(value)); // Or update UI here
+                            }
+                            const jsObject = JSON.parse(result);
+                            const htmlText = jsObject.output;
+                            const newMsg1: Message = {
+                                id: Date.now(),
+                                text: htmlText,
+                                sender: 'assistant',
+                            };
+                            //setThreadId(jsObject.thread_id);
+                            console.log(newMsg);
+                            console.log(newMsg1);
+                            setMessages([...messages, newMsg, newMsg1]);
+                        }
+
+                
+
+                       // return response.json();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
         
 
-        const bodyData: { question: string; thread?: string } = {
-            question: input
-        };
+        // const bodyData: { question: string; thread?: string; user_story: any; tasks: any } = {
+        //     question: input,
+        //     user_story: props.userStoryDataList,
+        //     tasks: props.taskDataList
+        // };
 
-        if (threadId) {
-            console.log("why not go here" + threadId);
-            bodyData['thread'] = threadId;
-        }
+        // if (threadId) {
+        //     console.log("why not go here" + threadId);
+        //     bodyData['thread'] = threadId;
+        // }
         setInput('');
 
-        fetch('https://il1rx6j6ba.execute-api.ap-southeast-1.amazonaws.com/prod/scrum-master', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bodyData),
-        })
-        .then(async response => {
-            if (!response.ok) {
-                console.log(response.body);
-                throw new Error('Network response was not ok');
-            }
+        // fetch('https://il1rx6j6ba.execute-api.ap-southeast-1.amazonaws.com/prod/scrum-master', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(bodyData),
+        // })
+        // .then(async response => {
+        //     if (!response.ok) {
+        //         console.log(response.body);
+        //         throw new Error('Network response was not ok');
+        //     }
 
-            const reader = response.body?.getReader();
-            if (reader) {
-                const decoder = new TextDecoder();
-                let result = '';
+        //     const reader = response.body?.getReader();
+        //     if (reader) {
+        //         const decoder = new TextDecoder();
+        //         let result = '';
 
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    result += decoder.decode(value, { stream: true });
-                    console.log('Chunk:', decoder.decode(value)); // Or update UI here
-                }
-                const jsObject = JSON.parse(result);
-                const htmlText = jsObject.message;
-                const newMsg1: Message = {
-                    id: Date.now(),
-                    text: htmlText,
-                    sender: 'assistant',
-                };
-                setThreadId(jsObject.thread_id);
-                setMessages([...messages, newMsg, newMsg1]);
+        //         while (true) {
+        //             const { done, value } = await reader.read();
+        //             if (done) break;
+        //             result += decoder.decode(value, { stream: true });
+        //             console.log('Chunk:', decoder.decode(value)); // Or update UI here
+        //         }
+        //         const jsObject = JSON.parse(result);
+        //         const htmlText = jsObject.message;
+        //         const newMsg1: Message = {
+        //             id: Date.now(),
+        //             text: htmlText,
+        //             sender: 'assistant',
+        //         };
+        //         setThreadId(jsObject.thread_id);
+        //         setMessages([...messages, newMsg, newMsg1]);
                 
                 
 
-                console.log('Full result:', result);
-            }
+        //         console.log('Full result:', result);
+        //     }
             
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        // })
+        // .catch(error => {
+        //     console.error('Error:', error);
+        // });
 
     };
 
@@ -202,7 +259,7 @@ function OutputSection(props: any) {
 
     return (
         <>  
-            <ChatSection userInfo={props.userInfo}/>
+            {/* <ChatSection userInfo={props.userInfo}/> */}
             <h1 className="text-xl font-semibold mb-4">Task spliter Assitant</h1>
         
             <div  className="flex flex-col h-[500px] w-full max-w-md mx-auto bg-white shadow-lg rounded-xl border  border-gray-200">

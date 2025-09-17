@@ -96,7 +96,8 @@ function InputSection(props: any) {
         const newStory = await client.models.UserStory.create({
             content: userStory,
             isDone: false,
-            inCharge: props.userId
+            inCharge: props.userId,
+            team_assigned: 'LINKIN_PARK'
         });
 
         // if (newStory.data) {
@@ -118,7 +119,7 @@ function InputSection(props: any) {
                 };
                 setUserStory('');
         
-                fetch('https://thanhtt1.app.n8n.cloud/webhook/3bfb25a6-8c3e-4204-842f-2202fa28f864', {
+                fetch('https://split-task.app.n8n.cloud/webhook/b53f72c9-3939-45f2-90dd-1db8444206e4', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

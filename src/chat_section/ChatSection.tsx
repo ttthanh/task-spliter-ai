@@ -46,7 +46,10 @@ function ChatSection(props: any) {
 
     const handleSend = async () => {
         if (!input.trim()) return;
+
         console.log(room);
+
+
         const newMessage = {
             room_id: room,
             id: String(Date.now()),
@@ -72,16 +75,16 @@ function ChatSection(props: any) {
         setRoom('');
     };
 
-    const createRoom = () => {
-        const data = Date.now();
-        setRoom(data.toString());
-    };
+    // const createRoom = () => {
+    //     const data = Date.now();
+    //     setRoom(data.toString());
+    // };
 
     
 
     return (
         <>
-            <h1 className="text-xl font-semibold mb-4">Task spliter Assitant</h1>
+            {/* <h1 className="text-xl font-semibold mb-4">Task spliter Assitant</h1>
         
             <Flex
                 justifyContent="flex-start"
@@ -97,7 +100,7 @@ function ChatSection(props: any) {
                 <Input value={room} onChange={(e) => setRoom(e.target.value)}
                     placeholder="Room number"
                 />
-            </Flex>
+            </Flex> */}
             
 
             

@@ -3,7 +3,7 @@ import AiProcessing from '../ai_process/AiProcessing';
 import { useState } from 'react';
 import type { Schema } from '../../amplify/data/resource';
 import { generateClient } from 'aws-amplify/data';
-import ChatSection from '../chat_section/ChatSection';
+import OutputSection from '../output_section/OutputSection';
 
 
 const client = generateClient<Schema>({
@@ -38,8 +38,8 @@ function App(props: any) {
                 deleteOneTask={deleteOneTask}/>
           </div>
           <div className="bg-white p-6 rounded shadow">
-              {/* <OutputSection userInfo={props.userInfo} userId={props.userInfo?.sub} userStoryDataList={userStoryM} taskDataList={taskMs}/> */}
-              <ChatSection userInfo={props.userInfo} userId={props.userInfo?.sub} userStoryDataList={userStoryM} taskDataList={taskMs}/>
+              <OutputSection userInfo={props.userInfo} userId={props.userInfo?.sub} userStoryDataList={userStoryM} taskDataList={taskMs}/>
+              {/* <ChatSection userInfo={props.userInfo} userId={props.userInfo?.sub} userStoryDataList={userStoryM} taskDataList={taskMs}/> */}
           </div>
         </div>
     </>

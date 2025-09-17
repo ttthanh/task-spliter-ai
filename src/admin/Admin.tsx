@@ -2,10 +2,35 @@ import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Legend, Bar
 import AssignTask from '../assign_task/AssignTask';
 import { SelectField, Grid, Card, Heading } from '@aws-amplify/ui-react';
 import TeamName from '../enum_data/team_name';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Admin() {
     const [selectedTeam, setSelectedTeam] = useState<string>(TeamName.LinkinPark);
+    useEffect(() => {
+        fetch('https://il1rx6j6ba.execute-api.ap-southeast-1.amazonaws.com/prod/get-all-user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log(response);
+                            throw new Error('Network response was not ok');
+                        }
+
+                        return response.json(); 
+                        
+                        }).then(data => {
+                            // Work with the fetched data
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }, []);
+
+    
 
     return (
         <>
@@ -146,7 +171,7 @@ function Admin() {
                     columnEnd="-1"
                 >
 
-                    <div>
+                    <div className='mt-7'>
                         <AssignTask selectedTeam={selectedTeam} />
                     </div>
                 </Card>
